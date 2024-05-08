@@ -1,5 +1,6 @@
 package run.halo.app.utils;
 
+import io.github.pixee.security.ZipSecurity;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -165,7 +166,7 @@ public class FileUtils {
     public static void unzip(@NonNull byte[] bytes, @NonNull Path targetPath) throws IOException {
         Assert.notNull(bytes, "Zip bytes must not be null");
 
-        ZipInputStream zis = new ZipInputStream(new ByteArrayInputStream(bytes));
+        ZipInputStream zis = ZipSecurity.createHardenedInputStream(new ByteArrayInputStream(bytes));
         unzip(zis, targetPath);
     }
 

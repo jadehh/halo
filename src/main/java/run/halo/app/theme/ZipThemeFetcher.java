@@ -1,5 +1,6 @@
 package run.halo.app.theme;
 
+import io.github.pixee.security.ZipSecurity;
 import static run.halo.app.utils.FileUtils.unzip;
 
 import java.io.IOException;
@@ -58,7 +59,7 @@ public class ZipThemeFetcher implements ThemeFetcher {
             var inputStream = inputStreamResponse.body();
 
             // unzip zip archive
-            try (var zipInputStream = new ZipInputStream(inputStream)) {
+            try (var zipInputStream = ZipSecurity.createHardenedInputStream(inputStream)) {
                 var tempDirectory = FileUtils.createTempDirectory();
                 log.info("Unzipping theme {} to {}", themeZipLink, tempDirectory);
                 unzip(zipInputStream, tempDirectory);
