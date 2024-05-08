@@ -1,5 +1,6 @@
 package run.halo.app.theme;
 
+import io.github.pixee.security.ZipSecurity;
 import static run.halo.app.utils.FileUtils.unzip;
 
 import java.io.IOException;
@@ -32,7 +33,7 @@ public class MultipartZipFileThemeFetcher implements ThemeFetcher {
     public ThemeProperty fetch(Object source) {
         final var file = (MultipartFile) source;
 
-        try (var zis = new ZipInputStream(file.getInputStream())) {
+        try (var zis = ZipSecurity.createHardenedInputStream(file.getInputStream())) {
             final var tempDirectory = FileUtils.createTempDirectory();
             log.info("Unzipping {} to path {}", file.getOriginalFilename(), tempDirectory);
             unzip(zis, tempDirectory);
